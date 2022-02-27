@@ -1,0 +1,5 @@
+[submodule "common"]
+	path = common
+	url = https://github.com/Scrap-Mechanic-Modding/SDK
+[submodule "common/"]
+	branch = dev
