@@ -65,11 +65,14 @@ int LuaSMM_Chat_getName(lua_State* L)
     return 1;
 }
 
-//TODO: Figure out what writes to chat and clear that shit
 int LuaSMM_Chat_clear(lua_State* L)
 {
     lua_settop(L, 0);
-    SM::InGameGuiManager::getInstancePtr()->m_chatGui->m_widgetReceivedMessages->setCaption("");
+
+    const auto chatgui = SM::InGameGuiManager::getInstancePtr()->m_chatGui;
+    chatgui->m_totalMessages = 0;
+    chatgui->m_widgetReceivedMessages->setCaption("");
+
     return 0;
 }
 
@@ -171,7 +174,7 @@ void Initialize(HMODULE hModule)
     //
     if (const auto lua_manager = SM::LuaManager::getInstancePtr())
     {
-        if (lua_manager->m_isServer)
+        if (lua_manager->m_bIsServer)
             LoadServerLibraries(lua_manager->m_pLuaVM);
         else
             LoadClientLibraries(lua_manager->m_pLuaVM);

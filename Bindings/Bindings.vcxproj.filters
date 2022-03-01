@@ -27,6 +27,9 @@
     <ClInclude Include="..\common\include\sdk.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\common\include\SM\ChatGui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
