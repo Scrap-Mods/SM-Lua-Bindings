@@ -1,6 +1,34 @@
 #include "pch.h"
 #include "BindingSMM_vm.h"
 
+int LuaSMM_Vm_clearFaults_onFixedUpdate(lua_State* L)
+{
+    for (const auto& state : SM::LuaManager::getInstancePtr()->m_onFixedUpdateStates)
+    {
+        state->m_bHasFault = false;
+    }
+
+    lua_pushboolean(L, true);
+    return 1;
+}
+
+int LuaSMM_Vm_getAll_onFixedUpdate(lua_State* L)
+{
+    // Create table, pre-allocated to correct size
+    lua_createtable(L, SM::LuaManager::getInstancePtr()->m_onFixedUpdateStates.size(), 0);
+
+    // Resolve subscribed onFixedUpdate states to classes
+    unsigned int index = 1;
+    for (const auto& state : SM::LuaManager::getInstancePtr()->m_onFixedUpdateStates)
+    {
+        lua_pushinteger(L, index++);
+        lua_rawgeti(L, LUA_REGISTRYINDEX, state->scriptRef);
+        lua_settable(L, -3);
+    }
+
+    return 1;
+}
+
 int LuaSMM_Vm_getLastEvent(lua_State* L)
 {
     const auto event_name = SM::LuaManager::getInstancePtr()->m_pLuaVM->m_lastEvent;
