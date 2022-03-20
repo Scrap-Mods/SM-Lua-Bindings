@@ -9,9 +9,8 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Header Files\LuaBindings">
+      <UniqueIdentifier>{7a569a61-af3c-433f-a03d-72e810eef2fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +29,24 @@
     <ClInclude Include="..\common\include\SM\ChatGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BindingSMM.h">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClInclude>
+    <ClInclude Include="BindingSMM_chat.h">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClInclude>
+    <ClInclude Include="BindingSMM_vm.h">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClInclude>
+    <ClInclude Include="BindingSMM_steam.h">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClInclude>
+    <ClInclude Include="BindingSMM_misc.h">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClInclude>
+    <ClInclude Include="BindingSMM_color.h">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -41,5 +58,26 @@
     <ClCompile Include="loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BindingSMM.cpp">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClCompile>
+    <ClCompile Include="BindingSMM_chat.cpp">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClCompile>
+    <ClCompile Include="BindingSMM_vm.cpp">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClCompile>
+    <ClCompile Include="BindingSMM_steam.cpp">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClCompile>
+    <ClCompile Include="BindingSMM_misc.cpp">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClCompile>
+    <ClCompile Include="BindingSMM_color.cpp">
+      <Filter>Header Files\LuaBindings</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

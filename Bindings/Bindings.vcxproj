@@ -58,18 +58,40 @@
   <ItemGroup>
     <ClInclude Include="..\common\include\sdk.hpp" />
     <ClInclude Include="..\common\include\SM\ChatGui.h" />
+    <ClInclude Include="BindingSMM.h" />
+    <ClInclude Include="BindingSMM_chat.h" />
+    <ClInclude Include="BindingSMM_color.h" />
+    <ClInclude Include="BindingSMM_misc.h" />
+    <ClInclude Include="BindingSMM_steam.h" />
+    <ClInclude Include="BindingSMM_vm.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="loader.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BindingSMM.cpp" />
+    <ClCompile Include="BindingSMM_chat.cpp" />
+    <ClCompile Include="BindingSMM_color.cpp" />
+    <ClCompile Include="BindingSMM_misc.cpp" />
+    <ClCompile Include="BindingSMM_steam.cpp" />
+    <ClCompile Include="BindingSMM_vm.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="loader.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\boost.1.78.0\build\boost.targets" Condition="Exists('packages\boost.1.78.0\build\boost.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\boost.1.78.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost.1.78.0\build\boost.targets'))" />
+  </Target>
 </Project>

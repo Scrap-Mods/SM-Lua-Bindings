@@ -44,91 +44,14 @@ bool RedirectConsoleIO()
     return result;
 }
 
-
-int LuaSMM_version(lua_State* L)
-{
-    lua_settop(L, 0);
-    lua_pushstring(L, "v1.0.0");
-    return 1;
-}
-
-const luaL_reg smm[] =
-{
-    {"version",   LuaSMM_version},
-    {NULL, NULL}
-};
-
-int LuaSMM_Chat_getName(lua_State* L)
-{
-    lua_settop(L, 0);
-    lua_pushstring(L, SM::InGameGuiManager::getInstancePtr()->m_chatGui->m_name.c_str());
-    return 1;
-}
-
-int LuaSMM_Chat_clear(lua_State* L)
-{
-    lua_settop(L, 0);
-
-    const auto chatgui = SM::InGameGuiManager::getInstancePtr()->m_chatGui;
-    chatgui->m_totalMessages = 0;
-    chatgui->m_widgetReceivedMessages->setCaption("");
-
-    return 0;
-}
-
-int LuaSMM_Chat_setName(lua_State* L)
-{
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "Expected 1 argument, got %d", lua_gettop(L));
-    }
-
-    const char* name = nullptr;
-    size_t size = -1;
-    
-    if (name = luaL_checklstring(L, 1, &size))
-    {
-        SM::InGameGuiManager::getInstancePtr()->m_chatGui->m_name.assign(name, size);
-    }
-    
-    lua_settop(L, 0);
-    return 0;
-}
-
-int LuaSMM_Chat_sendChatMessage(lua_State* L)
-{
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "Expected 1 argument, got %d", lua_gettop(L));
-    }
-
-    const char* message = nullptr;
-    size_t size = -1;
-
-    if (message = luaL_checklstring(L, 1, &size))
-    {
-        SM::InGameGuiManager::getInstancePtr()->m_chatGui->m_widgetMessage->setCaptionWithReplacing(std::string(message, size));
-        SM::InGameGuiManager::getInstancePtr()->m_chatGui->m_widgetMessage->_riseKeyButtonPressed(MyGUI::KeyCode::Return, 0xd);
-    }
-
-    lua_settop(L, 0);
-    return 0;
-}
-
-const luaL_reg smmChat[] =
-{
-    {"sendChatMessage", LuaSMM_Chat_sendChatMessage},
-    {"setName",         LuaSMM_Chat_setName},
-    {"getName",         LuaSMM_Chat_getName},
-    {"clear",           LuaSMM_Chat_clear},
-    {"listen",          LuaSMM_version}, // TODO: Implement
-    {NULL, NULL}
-};
-
-const luaL_reg scriptLibs[] =
+const luaL_reg scripts_registration[] =
 {
     {"smm",         lua_CFunction(&smm)},
-    {"smm.chat",    lua_CFunction(&smmChat)},
+    {"smm.chat",    lua_CFunction(&smm_chat)},
+    {"smm.vm",      lua_CFunction(&smm_vm)},
+    {"smm.steam",      lua_CFunction(&smm_steam)},
+    {"smm.misc",      lua_CFunction(&smm_misc)},
+    {"smm.color",      lua_CFunction(&smm_color)},
     {NULL, NULL}
 };
 
@@ -157,15 +80,15 @@ void Initialize(HMODULE hModule)
     const auto g_serverLibraries = reinterpret_cast<luaL_Reg**>(process_base + 0xDB5BB0);
     const auto g_sharedLibraries = reinterpret_cast<luaL_Reg*> (process_base + 0xDDF5C0);
 
-    clientLibs = (luaL_Reg*)&scriptLibs;
+    clientLibs = (luaL_Reg*)&scripts_registration;
     o_clientFunc = (*g_clientLibraries)->func;
     (*g_clientLibraries)->func = lua_CFunction(LoadClientLibraries);
 
-    serverLibs = (luaL_Reg*)&scriptLibs;
+    serverLibs = (luaL_Reg*)&scripts_registration;
     o_serverFunc = (*g_serverLibraries)->func;
     (*g_serverLibraries)->func = lua_CFunction(LoadServerLibraries);
 
-    sharedLibs = (luaL_Reg*)&scriptLibs;
+    sharedLibs = (luaL_Reg*)&scripts_registration;
     o_sharedFunc = g_sharedLibraries->func;
     g_sharedLibraries->func = lua_CFunction(LoadSharedLibraries);
 
@@ -211,7 +134,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
             lua_pushnil(L);
             
-            for (auto& x : scriptLibs)
+            for (auto& x : scripts_registration)
             {
                 if (x.name)
                 {
