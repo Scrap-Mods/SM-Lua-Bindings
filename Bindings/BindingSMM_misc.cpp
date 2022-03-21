@@ -4,14 +4,8 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/string_generator.hpp>
 
-int LuaSMM_Misc_test(lua_State* L)
+int LuaSMM_Misc_isDeveloperMode(lua_State* L)
 {
-    printf("Listing %d class listeners for client_onFixedUpdate\n", SM::LuaManager::getInstancePtr()->m_onFixedUpdateStates.size());
-
-    for (const auto& x : SM::LuaManager::getInstancePtr()->m_onFixedUpdateStates)
-    {
-        printf("ScriptRef: %d\n", x->scriptRef);
-    }
-
-    return 0;
+    lua_pushboolean(L, *SM::IsDeveloperMode());
+    return 1;
 }
